@@ -3,6 +3,7 @@ package com.lagradost.cloudstream3.gradle.tasks
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.tasks.ProcessLibraryManifest
 import com.lagradost.cloudstream3.gradle.getCloudstream
+import com.lagradost.cloudstream3.gradle.LibraryExtensionCompat
 import com.lagradost.cloudstream3.gradle.makeManifest
 import groovy.json.JsonBuilder
 import groovy.json.JsonGenerator
@@ -76,8 +77,8 @@ fun registerTasks(project: Project) {
                 project.tasks.getByName("processDebugManifest") as ProcessLibraryManifest
             it.dependsOn(processManifestTask)
 
-            val android = project.extensions.getByName("android") as BaseExtension
-            it.input.set(android.sourceSets.getByName("main").res.srcDirs.single())
+            val android = LibraryExtensionCompat(project)
+            it.input.set(android.mainResSrcDir)
             it.manifestFile.set(processManifestTask.manifestOutputFile)
 
             it.outputFile.set(intermediatesDir.map { it.file("res.apk") })
